@@ -1,46 +1,75 @@
-// var val1 = 'var変数';
-// console.log(val1);
+import "./styles.css";
 
-// val1 ='var変数を上書き';
-// console.log(val1);
+const onClickAdd = () => {
+  // テキストボックスの値を取得し、初期化する
+  const inputText = document.getElementById("add-text").value;
+  document.getElementById("add-text").value = "";
 
-// var var1 = 'var変数を再宣言';
-// console.log(var1);
+  // div 生成
+  const div = document.createElement("div");
+  div.className = "list-row";
 
-// let val2 = 'let変数';
-// console.log(val2);
+  // li 生成
+  const li = document.createElement("li");
+  li.innerText = inputText;
 
-// val2 = 'let変数を上書き';
-// console.log(val2);
+  // button(完了) 生成
+  const completeButton = document.createElement("button");
+  completeButton.className = "complete-button";
+  completeButton.innerText = "完了";
+  completeButton.addEventListener("click", () => {
+    // 押された完了ボタンの親タグ(div)を未完了リストから削除
+    deleteFromIncompleteList(completeButton.parentNode);
 
-// let val2 = 'let変数を再宣言';
+    // 完了リストに追加する要素を取得
+    const addTarget = completeButton.parentNode;
+    console.log(addTarget);
 
-// const val3 = 'const変数';
-// console.log(val3);
+    // TODO内容のテキストを取得
+    const text = addTarget.firstElementChild.innerText;
 
-// // val3 = 'const変数を上書き';
+    // div以下を初期化
+    addTarget.textContent = null;
 
-// const val3 = 'const変数を再宣言';
+    // li を生成
+    const li = document.createElement("li");
+    li.innerText = text;
 
-// const val4 = {
-//   name: 'じゃけぇ',
-//   age: '28',
-// }
+    // button(戻す) 生成
+    const backButton = document.createElement("button");
+    backButton.innerText = "戻す";
 
-// val4['name'] = 'sawada';
-// val4.age = 41;
-// console.log(val4);
+    // div の子要素に各要素を追加
+    addTarget.appendChild(li);
+    addTarget.appendChild(backButton);
 
-// constで定義した配列はプロパティの変更が可能
-// const val5 = ["dog", "cat"];
-// val5[0] = "bird";
-// val5.push("monkey");
-// console.log(val5);
+    // 完了リストに追加
+    document.getElementById("complete-list").appendChild(addTarget);
+  });
 
-/**
- * テンプレート文字列
- */
-const name = "じゃけぇ";
-const age = 28;
-// 「私の名前はじゃけぇです。年齢は28歳です。」
-console.log(`私の名前は${name}です。年齢は${age}歳です。`);
+  // button(削除) 生成
+  const deleteButton = document.createElement("button");
+  deleteButton.className = "delete-button";
+  deleteButton.innerText = "削除";
+  deleteButton.addEventListener("click", () => {
+    // 押された削除ボタンの親タグ(div)を未完了リストから削除
+    deleteFromIncompleteList(deleteButton.parentNode);
+  });
+
+  // div の子要素に各要素を設定
+  div.appendChild(li);
+  div.appendChild(completeButton);
+  div.appendChild(deleteButton);
+
+  // 未完了リストに追加
+  document.getElementById("incomplete-list").appendChild(div);
+};
+
+// 未完了リストから指定の要素を削除する関数
+const deleteFromIncompleteList = (target) => {
+  document.getElementById("incomplete-list").removeChild(target);
+};
+
+document
+  .getElementById("add-button")
+  .addEventListener("click", () => onClickAdd());
